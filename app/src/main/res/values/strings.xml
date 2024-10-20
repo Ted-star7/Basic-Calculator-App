@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Basic Calculator</string> <!-- Add this line -->
+    <string name="app_name">Basic Calculator</string>
+    <string name="display_initial_value">0</string>
+    <string name="error_message">Error</string>
     <string name="button_0">0</string>
     <string name="button_1">1</string>
     <string name="button_2">2</string>
@@ -15,7 +17,7 @@
     <string name="button_sub">-</string>
     <string name="button_mul">*</string>
     <string name="button_div">/</string>
+    <string name="button_clear">C</string>
     <string name="button_equals">=</string>
-    <string name="error_division_by_zero">Error</string>
-    <string name="enter_calculation">Enter calculation</string>
+    <string name="display_screen_description">Calculator display screen</string>
 </resources>

@@ -1,114 +1,165 @@
 package com.example.basiccalculator;
 
-import android.annotation.SuppressLint;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 public class MainActivity extends AppCompatActivity {
 
-    private EditText result;
-    private double num1;
-    private char operation;
+    private EditText displayScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize the result EditText
-        result = findViewById(R.id.result);
+        displayScreen = findViewById(R.id.display_screen);
 
         // Initialize buttons
-        Button btn_0 = findViewById(R.id.btn_0);
-        Button btn_1 = findViewById(R.id.btn_1);
-        Button btn_2 = findViewById(R.id.btn_2);
-        Button btn_3 = findViewById(R.id.btn_3);
-        Button btn_4 = findViewById(R.id.btn_4);
-        Button btn_5 = findViewById(R.id.btn_5);
-        Button btn_6 = findViewById(R.id.btn_6);
-        Button btn_7 = findViewById(R.id.btn_7);
-        Button btn_8 = findViewById(R.id.btn_8);
-        Button btn_9 = findViewById(R.id.btn_9);
-        Button btn_add = findViewById(R.id.btn_add);
-        Button btn_sub = findViewById(R.id.btn_sub);
-        Button btn_mul = findViewById(R.id.btn_mul);
-        Button btn_div = findViewById(R.id.btn_div);
-        Button btn_equals = findViewById(R.id.btn_equals);
+        Button button0 = findViewById(R.id.button_0);
+        Button button1 = findViewById(R.id.button_1);
+        Button button2 = findViewById(R.id.button_2);
+        Button button3 = findViewById(R.id.button_3);
+        Button button4 = findViewById(R.id.button_4);
+        Button button5 = findViewById(R.id.button_5);
+        Button button6 = findViewById(R.id.button_6);
+        Button button7 = findViewById(R.id.button_7);
+        Button button8 = findViewById(R.id.button_8);
+        Button button9 = findViewById(R.id.button_9);
+        Button buttonAdd = findViewById(R.id.button_add);
+        Button buttonSubtract = findViewById(R.id.button_sub);
+        Button buttonMultiply = findViewById(R.id.button_mul);
+        Button buttonDivide = findViewById(R.id.button_div);
+        Button buttonClear = findViewById(R.id.button_clear);
+        Button buttonEquals = findViewById(R.id.button_equals);
 
-        // Set onClick listeners for number buttons
-        btn_0.setOnClickListener(v -> appendToResult("0"));
-        btn_1.setOnClickListener(v -> appendToResult("1"));
-        btn_2.setOnClickListener(v -> appendToResult("2"));
-        btn_3.setOnClickListener(v -> appendToResult("3"));
-        btn_4.setOnClickListener(v -> appendToResult("4"));
-        btn_5.setOnClickListener(v -> appendToResult("5"));
-        btn_6.setOnClickListener(v -> appendToResult("6"));
-        btn_7.setOnClickListener(v -> appendToResult("7"));
-        btn_8.setOnClickListener(v -> appendToResult("8"));
-        btn_9.setOnClickListener(v -> appendToResult("9"));
+        // Set button click listeners using lambdas
+        button0.setOnClickListener(v -> updateDisplay(getString(R.string.button_0)));
+        button1.setOnClickListener(v -> updateDisplay(getString(R.string.button_1)));
+        button2.setOnClickListener(v -> updateDisplay(getString(R.string.button_2)));
+        button3.setOnClickListener(v -> updateDisplay(getString(R.string.button_3)));
+        button4.setOnClickListener(v -> updateDisplay(getString(R.string.button_4)));
+        button5.setOnClickListener(v -> updateDisplay(getString(R.string.button_5)));
+        button6.setOnClickListener(v -> updateDisplay(getString(R.string.button_6)));
+        button7.setOnClickListener(v -> updateDisplay(getString(R.string.button_7)));
+        button8.setOnClickListener(v -> updateDisplay(getString(R.string.button_8)));
+        button9.setOnClickListener(v -> updateDisplay(getString(R.string.button_9)));
 
-        // Set onClick listeners for operation buttons
-        btn_add.setOnClickListener(v -> setOperation('+'));
-        btn_sub.setOnClickListener(v -> setOperation('-'));
-        btn_mul.setOnClickListener(v -> setOperation('*'));
-        btn_div.setOnClickListener(v -> setOperation('/'));
+        buttonAdd.setOnClickListener(v -> updateDisplay(getString(R.string.button_add)));
+        buttonSubtract.setOnClickListener(v -> updateDisplay(getString(R.string.button_sub)));
+        buttonMultiply.setOnClickListener(v -> updateDisplay(getString(R.string.button_mul)));
+        buttonDivide.setOnClickListener(v -> updateDisplay(getString(R.string.button_div)));
 
-        // Set onClick listener for equals button
-        btn_equals.setOnClickListener(v -> calculateResult());
-
-        // Handle window insets
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right , systemBars.bottom);
-            return WindowInsetsCompat.CONSUMED;
-        });
+        buttonEquals.setOnClickListener(v -> calculateResult());
+        buttonClear.setOnClickListener(v -> displayScreen.setText(R.string.display_initial_value));
     }
 
-    private void appendToResult(String value) {
-        StringBuilder currentText = new StringBuilder(result.getText().toString());
-        currentText.append(value);
-        result.setText(currentText.toString());
-    }
-
-    private void setOperation(char operation) {
-        this.operation = operation;
-        num1 = Double.parseDouble(result.getText().toString());
-        result.setText("");
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void calculateResult() {
-        // These can remain as class fields
-        double num2 = Double.parseDouble(result.getText().toString());
-        double resultValue = 0;
-
-        switch (operation) {
-            case '+':
-                resultValue = num1 + num2;
-                break;
-            case '-':
-                resultValue = num1 - num2;
-                break;
-            case '*':
-                resultValue = num1 * num2;
-                break;
-            case '/':
-                if (num2 != 0) {
-                    resultValue = num1 / num2;
-                } else {
-                    result.setText("Error");
-                    return;
-                }
-                break;
+    private void updateDisplay(String value) {
+        String currentText = displayScreen.getText().toString();
+        if (currentText.equals(getString(R.string.display_initial_value))) {
+            displayScreen.setText(value);
+        } else {
+            displayScreen.setText(currentText + value);
         }
+    }
 
-        result.setText(String.valueOf(resultValue));
+    private void calculateResult() {
+        String currentText = displayScreen.getText().toString();
+        try {
+            double result = eval(currentText);
+            displayScreen.setText(String.valueOf(result));
+        } catch (Exception e) {
+            displayScreen.setText(R.string.error_message);
+        }
+    }
+
+    private double eval(final String str) {
+        return new Object() {
+            int pos = -1, ch;
+
+            void nextChar() {
+                ch = (++pos < str.length()) ? str.charAt(pos) : -1;
+            }
+
+            boolean eat(int charToEat) {
+                while (ch == ' ') nextChar();
+                if (ch == charToEat) {
+                    nextChar();
+                    return true;
+                }
+                return false;
+            }
+
+            double parse() {
+                nextChar();
+                double v = parseExpression();
+                if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char) ch);
+                return v;
+            }
+
+            // Grammar:
+            // expression = term | expression `+` term | expression `-` term
+            // term = factor | term `*` factor | term `/` factor
+            // factor = `+` factor | `-` factor | `(` expression `)`
+            //        | number | functionName factor | factor `^` factor
+
+            double parseExpression() {
+                double v = parseTerm();
+                while (true) {
+                    if (eat('+')) {
+                        v += parseTerm(); // addition
+                    } else if (eat('-')) {
+                        v -= parseTerm(); // subtraction
+                    } else {
+                        break;
+                    }
+                }
+                return v;
+            }
+
+            double parseTerm() {
+                double v = parseFactor();
+                while (true) {
+                    if (eat('*')) {
+                        v *= parseFactor(); // multiplication
+                    } else if (eat('/')) {
+                        v /= parseFactor(); // division
+                    } else {
+                        break;
+                    }
+                }
+                return v;
+            }
+
+            double parseFactor() {
+                if (eat('+')) return parseFactor(); // unary plus
+                if (eat('-')) return -parseFactor(); // unary minus
+
+                double v;
+                int startPos = this.pos ;
+                if (eat('(')) { // parentheses
+                    v = parseExpression();
+                    eat(')');
+                } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
+                    while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
+                    v = Double.parseDouble(str.substring(startPos, this.pos));
+                } else if (ch >= 'a' && ch <= 'z') { // functions
+                    while (ch >= 'a' && ch <= 'z') nextChar();
+                    String func = str.substring(startPos, this.pos);
+                    v = parseFactor();
+                    if (func.equals("sqrt")) v = Math.sqrt(v);
+                    else if (func.equals("sin")) v = Math.sin(Math.toRadians(v));
+                    else if (func.equals("cos")) v = Math.cos(Math.toRadians(v));
+                    else if (func.equals("tan")) v = Math.tan(Math.toRadians(v));
+                    else throw new RuntimeException("Unknown function: " + func);
+                } else {
+                    throw new RuntimeException("Unexpected: " + (char) ch);
+                }
+
+                return v;
+            }
+        }.parse();
     }
 }
